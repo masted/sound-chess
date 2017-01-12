@@ -1,0 +1,98 @@
+<body>
+<div class="chess"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.js"></script>
+<style>
+
+
+.sq {
+display: inline-block;
+width: 50px;
+height: 50px;
+cursor: pointer;
+box-sizing: border-box;
+}
+.sq:hover {
+background-color: #999;
+}
+.sq.playing {
+background: #fff url(horse-black.png) 10px 10px no-repeat;
+background-size: 30px 30px;
+}
+.black {
+background: #000
+}
+.sq.black.playing {
+background: #000 url(horse-white.png) 10px 10px no-repeat;
+background-size: 30px 30px;
+}
+
+.disabled {
+background: #ccc;
+}
+
+</style>
+<script>
+//var audio = new Audio('tracking/chess110_6_BASS.wav');
+//audio.play();
+var tracking = [
+'tracking/chess110_6_BASS.wav',
+'tracking/chess110_6_BASS2.wav',
+'tracking/chess110_6_BREAKZ.wav',
+'tracking/chess110_6_BREAKZ@2.wav',
+'tracking/chess110_6_DELAYKICK.wav',
+'tracking/chess110_6_EUPHORIAPAD.wav',
+'tracking/chess110_6_GLITCHMACHINE.wav',
+'tracking/chess110_6_HAT.wav',
+'tracking/chess110_6_KICKLOW.wav',
+'tracking/chess110_6_LEAD.wav',
+'tracking/chess110_6_ORGANIC.wav',
+'tracking/chess110_6_PAD.wav',
+'tracking/chess110_6_PADSAMPLE2.wav',
+'tracking/chess110_6_PLASTIC.wav',
+'tracking/chess110_6_PSYZAP.wav',
+'tracking/chess110_6_sampleend.wav',
+'tracking/chess110_6_STARTAMBIENT.wav',
+'tracking/chess110_6_SYNTH.wav'
+];
+for (var i =0; i<tracking.length; i++) {
+  tracking[i] = new Audio(tracking[i]);
+}
+console.log(tracking);
+//
+var chess = document.getElement('.chess');
+var row;
+var color = 0;
+var n=0;
+for (var i =0; i<8; i++) {
+  for (var j =0; j<8; j++) {
+    if (i%2) color = j%2 ? 0 : 1
+    else color = j%2 ? 1 : 0
+    if (j == 0) {
+      row = new Element('div.row').inject(chess);
+    }
+    (function(n) {
+      div = new Element('div.sq.' + (color ? 'white' : 'black')).
+      inject(row).addEvent('click', function() {
+        if (this.retrieve('playing')) {
+          this.store('playing', 0);
+          this.removeClass('playing');
+          tracking[n].muted = true;
+        } else {
+          this.store('playing', 1);
+          this.addClass('playing');
+          tracking[n].muted = false;
+        }
+      });
+      if (!tracking[n]) {
+        div.addClass('disabled');
+      } else {
+        tracking[n].play();
+        tracking[n].muted = true;
+      }
+    })(n);
+    n++;
+  }
+}
+
+</script>
+</body>
